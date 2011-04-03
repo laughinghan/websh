@@ -3,7 +3,6 @@
  */
 
 
-
 /**
  * goto_coord
  *      move the cursor to the given coord
@@ -37,42 +36,123 @@ function clearLine() {
  * for each numerical argument, perform the corresponding
  * graphics operation.
  */
+textAttributes = {'bold':false,'underscore':false,'blink':false,'reverseVideo':false,'concealed':false}
+ 
 function setGraphicsMode(numericalArgs) {
+    for (arg in numericalArgs) {
+        switch (arg) {
+            //text attributes
+            case 0:
+                for (attribute in textAttributes) {
+                    textAttributes[attribute] = false;
+                }
+                break;
+            case 1:
+                textAttributes.bold = true;
+                break;
+            case 4:
+                textAttributes.underscore = true;
+                break;
+            case 5:
+                textAttributes.blink = true;
+                break;
+            case 7:
+                textAttributes.reverseVideo = true;
+                break;
+            case 8:
+                textAttributes.concealed = true;
+                break;
+            //foreground colors
+            case 30:
+                setForegroundColor('black');
+                break;
+            case 31:
+                setForegroundColor('red');
+                break;
+            case 32:
+                setForegroundColor('green');
+                break;
+            case 33:
+                setForegroundColor('yellow');
+                break;
+            case 34:
+                setForegroundColor('blue');
+                break;
+            case 35:
+                setForegroundColor('magenta');
+                break;
+            case 36:
+                setForegroundColor('cyan');
+                break;
+            case 37:
+                setForegroundColor('white');
+                break;
+            //background colors
+            case 40:
+                setBackgroundColor('black');
+                break;
+            case 41:
+                setBackgroundColor('red');
+                break;
+            case 42:
+                setBackgroundColor('green');
+                break;
+            case 43:
+                setBackgroundColor('yellow');
+                break;
+            case 44:
+                setBackgroundColor('blue');
+                break;
+            case 45:
+                setBackgroundColor('magenta');
+                break;
+            case 46:
+                setBackgroundColor('cyan');
+                break;
+            case 47:
+                setBackgroundColor('white');
+                break;            
+        }
+    }
+}
+
+/**
+ * setForegroundColor
+ * set the text color to color
+ */
+ 
+function setForegroundColor(color) {
     
 }
+
+/**
+ * setBackgroundColor
+ * set the background color to color
+ */
+ 
+ function setBackgroundColor(color) {
+     
+ }
 
 /**
  * write
  *      write text to where the cursor is
  *      either inserts or replaces texted depending on overwrite value
  */
-
-function write(str, overwrite) {
-    str.split('\n')
-        .forEach(function(s) {
-            write_line(s,overwrite);
-        });
-}
-
-function write_line (str, overwrite) {
-    if(!overwrite || (Terminal.left == $("#cursor").parent().text().length - 1)) {
-        $("#cursor").before(str);
-    } else { // if must overwrite
-        $("#cursor").before(str);
+function write (str, overwrite) {
+    if(overwrite){
+        ;
+    } else {
+        ;
     }
 };
 
-
-function format_str(str) {
-    str = str.replace(/\n/g, '</p>\n<p>');
-
-    return str;
-}
+now = {} //debug
 
 /**
  * Parse for ANSI escape codes and react accordingly.
  */
-/*now.stdout = function (str) {
+now.stdout = function (str) {
     escape_code = /\x1b\[(?:\d;)*\d?[A-Za-z]/g;
     non_escaped = str.split(escape_code);
     escaped = str.match(escape_code);
@@ -136,8 +216,9 @@ function handleEscapedString(escapedStr) {
         setGraphicsMode(numericalArgs);
         break;
     //TODO Set Mode, Reset Mode, Set Keyboard Strings
+    }
 }
-*/
+
 var Terminal = {
     buffer: "",
     top: 0,
@@ -153,14 +234,10 @@ var Terminal = {
 
     
     init: function() {
-        // cursor
         this.setCursorState();
     },
     
     setCursorState: function() {
-        this.top  = $("#display p").index($("#cursor").parent());
-        this.left = $("#cursor").parent().text().indexOf($("#cursor").text());
-
         // toggle cursor
         $("#cursor").toggleClass("on").toggleClass("off");
 
