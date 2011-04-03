@@ -3,6 +3,7 @@
  */
 
 
+
 /**
  * goto_coord
  *      move the cursor to the given coord
@@ -45,20 +46,33 @@ function setGraphicsMode(numericalArgs) {
  *      write text to where the cursor is
  *      either inserts or replaces texted depending on overwrite value
  */
-function write (str, overwrite) {
-    if(overwrite){
-        ;
-    } else {
-        ;
+
+function write(str, overwrite) {
+    str.split('\n')
+        .forEach(function(s) {
+            write_line(s,overwrite);
+        });
+}
+
+function write_line (str, overwrite) {
+    if(!overwrite || (Terminal.left == $("#cursor").parent().text().length - 1)) {
+        $("#cursor").before(str);
+    } else { // if must overwrite
+        $("#cursor").before(str);
     }
 };
 
-now = {} //debug
+
+function format_str(str) {
+    str = str.replace(/\n/g, '</p>\n<p>');
+
+    return str;
+}
 
 /**
  * Parse for ANSI escape codes and react accordingly.
  */
-now.stdout = function (str) {
+/*now.stdout = function (str) {
     escape_code = /\x1b\[(?:\d;)*\d?[A-Za-z]/g;
     non_escaped = str.split(escape_code);
     escaped = str.match(escape_code);
@@ -123,7 +137,7 @@ function handleEscapedString(escapedStr) {
         break;
     //TODO Set Mode, Reset Mode, Set Keyboard Strings
 }
-
+*/
 var Terminal = {
     buffer: "",
     top: 0,
@@ -139,10 +153,14 @@ var Terminal = {
 
     
     init: function() {
+        // cursor
         this.setCursorState();
     },
     
     setCursorState: function() {
+        this.top  = $("#display p").index($("#cursor").parent());
+        this.left = $("#cursor").parent().text().indexOf($("#cursor").text());
+
         // toggle cursor
         $("#cursor").toggleClass("on").toggleClass("off");
 
