@@ -32,6 +32,15 @@ function clearLine() {
 };
 
 /**
+ * setGraphicsMode
+ * for each numerical argument, perform the corresponding
+ * graphics operation.
+ */
+function setGraphicsMode(numericalArgs) {
+    
+}
+
+/**
  * write
  *      write text to where the cursor is
  *      either inserts or replaces texted depending on overwrite value
@@ -92,6 +101,7 @@ function handleEscapedString(escapedStr) {
     case 'C':
         setCursorCoords(currentTop,currentLeft - numericalArgs[0]);
         break;
+    //move right so many rows
     case 'D':
         setCursorCoords(currentTop,currentLeft + numericalArgs[0]);
         break;
@@ -103,10 +113,15 @@ function handleEscapedString(escapedStr) {
         break;
     case 'J':
         clearScreen();
+        setCursorCoords(0,0);
         break;
     case 'K':
         clearLine();
         break;
+    case 'm':
+        setGraphicsMode(numericalArgs);
+        break;
+    //TODO Set Mode, Reset Mode, Set Keyboard Strings
 }
 
 var Terminal = {
