@@ -2,7 +2,6 @@
  * Screen
  */
 
-
 /**
  * goto_coord
  *      move the cursor to the given coord
@@ -22,10 +21,11 @@ function getCursorCoords() {
  *      either inserts or replaces texted depending on overwrite value
  */
 function write (str, overwrite) {
-    if(overwrite){
-        ;
-    } else {
-        ;
+    if(!overwrite || (Terminal.left == $("#cursor").parent().text().length - 1)) {
+        $("#cursor").before(str);
+        return;
+    } else { // if must overwrite
+        $("#cursor").before(str);
     }
 };
 
@@ -44,10 +44,14 @@ var Terminal = {
 
     
     init: function() {
+        // cursor
         this.setCursorState();
     },
     
     setCursorState: function() {
+        this.top  = $("#display p").index($("#cursor").parent());
+        this.left = $("#cursor").parent().text().indexOf($("#cursor").text());
+
         // toggle cursor
         $("#cursor").toggleClass("on").toggleClass("off");
 
