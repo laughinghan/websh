@@ -17,6 +17,21 @@ function getCursorCoords() {
 };
 
 /**
+ * Clear all characters on screen.
+ */
+function clearScreen() {
+    
+};
+/**
+ * Clear all characters from the current cursor
+ * to the end of the current line, including
+ * the current cursor.
+ */
+function clearLine() {
+    
+};
+
+/**
  * write
  *      write text to where the cursor is
  *      either inserts or replaces texted depending on overwrite value
@@ -61,32 +76,37 @@ function handleEscapedString(escapedStr) {
     currentTop = currentCoords[top]; currentLeft = currentCoords[left];
     switch(letter_code) {
     //move to specified position
-    case H:
-    case f:
+    case 'H':
+    case 'f':
         setCursorCoords(numericalArgs[0],numericalArgs[1]);
         break;
     //move up so many rows
-    case A:
+    case 'A':
         setCursorCoords(currentTop - numericalArgs[0],currentLeft);
         break;
     //move down so many rows
-    case B:
+    case 'B':
         setCursorCoords(currentTop + numericalArgs[0],currentLeft);
         break;
     //move left so many rows
-    case C:
+    case 'C':
         setCursorCoords(currentTop,currentLeft - numericalArgs[0]);
         break;
-    case D:
+    case 'D':
         setCursorCoords(currentTop,currentLeft + numericalArgs[0]);
         break;
-    case s:
+    case 's':
         savedCoords = currentCoords;
         break;
-    case u:
+    case 'u':
         setCursorCoords(savedCoords[top],savedCoords[left]);
         break;
-    }
+    case 'J':
+        clearScreen();
+        break;
+    case 'K':
+        clearLine();
+        break;
 }
 
 var Terminal = {
