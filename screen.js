@@ -3,6 +3,7 @@
  */
 
 
+var cleanLine = '<p><span id="cursor" class="on">&nbsp;</span></p>'; 
 
 /**
  * goto_coord
@@ -21,7 +22,8 @@ function getCursorCoords() {
  * Clear all characters on screen.
  */
 function clearScreen() {
-    
+   $("#display").children().remove();
+   $("#display").append(cleanLine);
 };
 /**
  * Clear all characters from the current cursor
@@ -29,7 +31,7 @@ function clearScreen() {
  * the current cursor.
  */
 function clearLine() {
-    
+    $("#cursor").parent().replaceWith(cleanLine);
 };
 
 /**
@@ -121,8 +123,9 @@ function handleEscapedString(escapedStr) {
     case 'K':
         clearLine();
         break;
+    }
 }
-*/
+
 var Terminal = {
     buffer: "",
     top: 0,
