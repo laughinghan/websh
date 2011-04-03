@@ -29,6 +29,27 @@ function write (str, overwrite) {
     }
 };
 
+/**
+ * Parse for ANSI escape codes and react accordingly.
+ */
+now.stdout = function (str) {
+    escape_code = /\x1b\[(?:\d;)*\d?[A-Za-z]/g;
+    non_escaped = str.split(escape_code);
+    escaped = str.match(escape_code);
+    if (!escaped) {
+        escaped = {};
+    }
+    for (i=0; i < escaped.length; i++) {
+           write(non_escaped[i],false);
+           handle_escaped_string(escaped[i]);
+    }
+    write(non_escaped[escaped.length],false);
+}
+
+function handle_escaped_string(str) {
+    
+}
+
 var Terminal = {
     buffer: "",
     top: 0,
