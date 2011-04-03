@@ -1,0 +1,21 @@
+html, body { height: 99%; }
+body {
+    font-family: "Courier New",Courier,monospace; 
+    background: #000000;
+    color: #FFFFFF;
+}
+body, p, div#display { margin: 0; }
+div#screen {
+    height: 100%;
+    padding: 0;
+    margin: 2px;
+    overflow: :auto;
+    display: block;
+}
+
+#cursor {
+    font-weight: normal;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
