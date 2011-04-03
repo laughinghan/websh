@@ -5,11 +5,17 @@ var server = require('http').createServer(function(req, res) {
 });
 server.listen(8081);
 
-var everyone = require("now").initialize(server);
+var socket = require('socket.io').listen(server);
 var spawn = require('child_process').spawn;
-everyone.connected(function() {
-  this.now.shell = spawn('/bin/bash');
-});
-everyone.disconnected(function() {
-  this.now.shell.kill();
+socket.on('connection', function(client) {
+  var shell = spawn('/bin/bash');
+  shell.stdout.on('data', function(data) {
+    client.send(data);
+  });
+  client.on('message', function(data) {
+    shell.stdin.write(data);
+  });
+  client.on('disconnect', function() {
+    shell.kill();
+  });
 });

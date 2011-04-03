@@ -173,27 +173,6 @@ function write_line(str, overwrite) {
     }
 }
 
-now = {} //debug
-
-/**
- * Parse for ANSI escape codes and react accordingly.
- */
-now.stdout = function (str) {
-    escape_code = /\x1b\[(?:\d;)*\d?[A-Za-z]/g;
-    non_escaped = str.split(escape_code);
-    escaped = str.match(escape_code);
-    if (!escaped) {
-        escaped = {};
-    }
-    for (i=0; i < escaped.length; i++) {
-           write(non_escaped[i],false);
-           handleEscapedString(escaped[i]);
-    }
-    write(non_escaped[escaped.length],false);
-}
-
-savedCoords = null;
-
 /**
  * Parse an escape sequence, call the appropriate
  * semantic actions
@@ -282,4 +261,32 @@ var Terminal = {
 
 $(function(){ // on load
     Terminal.init();
+
+    var socket = new io.Socket();
+    socket.connect();
+
+    /**
+     * Parse for ANSI escape codes and react accordingly.
+     */
+    socket.on('message', function (str) {
+        escape_code = /\x1b\[(?:\d;)*\d?[A-Za-z]/g;
+        non_escaped = str.split(escape_code);
+        escaped = str.match(escape_code);
+        if (!escaped) {
+            escaped = {};
+        }
+        for (i=0; i < escaped.length; i++) {
+               write(non_escaped[i],false);
+               handleEscapedString(escaped[i]);
+        }
+        write(non_escaped[escaped.length],false);
+    });
+
+    savedCoords = null;
+
+    $(document).keydown(function(e) {
+      
+    }).keypress(function(e) {
+        socket.send(String.fromCharCode(e.which));
+    });
 });
