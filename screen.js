@@ -157,13 +157,21 @@ function setForegroundColor(color) {
  *      write text to where the cursor is
  *      either inserts or replaces texted depending on overwrite value
  */
-function write (str, overwrite) {
-    if(overwrite){
-        ;
-    } else {
-        ;
+
+function write(str, overwrite) {
+    str.split('\n')
+        .forEach(function(s){
+            write_line(s, overwrite);
+        });
+}
+
+function write_line(str, overwrite) {
+    if(!overwrite || (Terminal.left == $("#cursor").parent().text().length() - 1)) {
+        $("#cursor").before(str);
+    } else { // must overwrite
+        $("#cursor").before(str);
     }
-};
+}
 
 now = {} //debug
 
@@ -252,10 +260,15 @@ var Terminal = {
 
     
     init: function() {
+        // cursor
         this.setCursorState();
     },
     
     setCursorState: function() {
+        // cursor
+        this.top  = $("#display p").index($("#cursor").parent());
+        this.left = $("#cursor").parent().text().indexOf($("#cursor").text());
+
         // toggle cursor
         $("#cursor").toggleClass("on").toggleClass("off");
 
