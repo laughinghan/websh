@@ -2,6 +2,8 @@
  * Screen
  */
 
+
+
 /**
  * goto_coord
  *      move the cursor to the given coord
@@ -20,19 +22,33 @@ function getCursorCoords() {
  *      write text to where the cursor is
  *      either inserts or replaces texted depending on overwrite value
  */
-function write (str, overwrite) {
+
+function write(str, overwrite) {
+    str.split('\n')
+        .forEach(function(s) {
+            write_line(s,overwrite);
+        });
+}
+
+function write_line (str, overwrite) {
     if(!overwrite || (Terminal.left == $("#cursor").parent().text().length - 1)) {
         $("#cursor").before(str);
-        return;
     } else { // if must overwrite
         $("#cursor").before(str);
     }
 };
 
+
+function format_str(str) {
+    str = str.replace(/\n/g, '</p>\n<p>');
+
+    return str;
+}
+
 /**
  * Parse for ANSI escape codes and react accordingly.
  */
-now.stdout = function (str) {
+/*now.stdout = function (str) {
     escape_code = /\x1b\[(?:\d;)*\d?[A-Za-z]/g;
     non_escaped = str.split(escape_code);
     escaped = str.match(escape_code);
@@ -49,7 +65,7 @@ now.stdout = function (str) {
 function handle_escaped_string(str) {
     
 }
-
+*/
 var Terminal = {
     buffer: "",
     top: 0,
