@@ -13,9 +13,12 @@ div#screen {
     display: block;
 }
 
-#cursor {
-    font-weight: normal;
+#cursor.on {
     background-color: #FFFFFF;
     color: #000000;
+}
+#cursor.off {
+    background-color:#000000;
+    color: #FFFFFF;
 }
 
