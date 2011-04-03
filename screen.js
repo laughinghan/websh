@@ -3,6 +3,11 @@
  */
 
 
+<<<<<<< HEAD
+=======
+var cleanLine = '<p><span id="cursor" class="on">&nbsp;</span></p>'; 
+
+>>>>>>> 3ac52df11806e3dbca2b047a8db3f25f6f0ec415
 /**
  * goto_coord
  *      move the cursor to the given coord
@@ -20,7 +25,8 @@ function getCursorCoords() {
  * Clear all characters on screen.
  */
 function clearScreen() {
-    
+   $("#display").children().remove();
+   $("#display").append(cleanLine);
 };
 /**
  * Clear all characters from the current cursor
@@ -28,7 +34,7 @@ function clearScreen() {
  * the current cursor.
  */
 function clearLine() {
-    
+    $("#cursor").parent().replaceWith(cleanLine);
 };
 
 /**
