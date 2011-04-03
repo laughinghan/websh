@@ -5,11 +5,26 @@
 
 var cleanLine = '<p><span id="cursor" class="on">&nbsp;</span></p>'; 
 
+function setBackgroundColor(rgb) {
+    $("body").css('background-color',rgb); 
+    $("#cursor.on").css('color',rgb); 
+    $("#cursor.off").css('background-color',rgb);
+}
+
+function setForegroundColor(rgb) {
+    $("body").css('color',rgb);
+    $("#cursor.on").css('background-color',rgb);
+    $("#cursor.off").css('color',rgb);
+}
+
 /**
  * goto_coord
  *      move the cursor to the given coord
  */
 function setCursorCoords(_top, _left) {
+    line = $("#display p :eq("+ _top + ")");
+
+
     Terminal.top  = _top;
     Terminal.left = _left;
 };
