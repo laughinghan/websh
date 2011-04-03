@@ -43,14 +43,50 @@ now.stdout = function (str) {
     }
     for (i=0; i < escaped.length; i++) {
            write(non_escaped[i],false);
-           handle_escaped_string(escaped[i]);
+           handleEscapedString(escaped[i]);
     }
     write(non_escaped[escaped.length],false);
 }
 
-function handle_escaped_string(escaped_str) {
-    numerical_args = escaped_str.slice(2,-1)
-    letter_code = escaped_str[escaped_str.length-1]
+savedCoords = null;
+
+/**
+ * Parse an escape sequence, call the appropriate
+ * semantic actions
+ */
+function handleEscapedString(escapedStr) {
+    numericalArgs = escapedStr.slice(2,-1).split(";").map(parseInt);
+    letterCode = escapedStr[escapedStr.length-1];
+    currentCoords = getCursorCoords();
+    currentTop = currentCoords[top]; currentLeft = currentCoords[left];
+    switch(letter_code) {
+    //move to specified position
+    case H:
+    case f:
+        setCursorCoords(numericalArgs[0],numericalArgs[1]);
+        break;
+    //move up so many rows
+    case A:
+        setCursorCoords(currentTop - numericalArgs[0],currentLeft);
+        break;
+    //move down so many rows
+    case B:
+        setCursorCoords(currentTop + numericalArgs[0],currentLeft);
+        break;
+    //move left so many rows
+    case C:
+        setCursorCoords(currentTop,currentLeft - numericalArgs[0]);
+        break;
+    case D:
+        setCursorCoords(currentTop,currentLeft + numericalArgs[0]);
+        break;
+    case s:
+        savedCoords = currentCoords;
+        break;
+    case u:
+        setCursorCoords(savedCoords[top],savedCoords[left]);
+        break;
+    }
 }
 
 var Terminal = {
