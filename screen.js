@@ -29,6 +29,8 @@ function write (str, overwrite) {
     }
 };
 
+now = {} //debug
+
 /**
  * Parse for ANSI escape codes and react accordingly.
  */
@@ -46,8 +48,9 @@ now.stdout = function (str) {
     write(non_escaped[escaped.length],false);
 }
 
-function handle_escaped_string(str) {
-    
+function handle_escaped_string(escaped_str) {
+    numerical_args = escaped_str.slice(2,-1)
+    letter_code = escaped_str[escaped_str.length-1]
 }
 
 var Terminal = {
